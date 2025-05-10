@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Interactive Plot with htmx</title>
+  <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    .slider-container {
+      margin: 20px 0;
+    }
+
+    .plot-container {
+      margin-top: 30px;
+      border: 1px solid #e0e0e0;
+      border-radius: 5px;
+      padding: 10px;
+    }
+
+    input[type="range"] {
+      width: 300px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 10px;
+      font-weight: bold;
+    }
+
+    .value-display {
+      display: inline-block;
+      margin-left: 10px;
+      min-width: 40px;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>Interactive Plot with htmx</h1>
+  <p>Adjust the opacity of the plot using the slider below:</p>
+
+  <div class="slider-container">
+    <label for="opacity-slider">Opacity: <span id="opacity-value" class="value-display">100%</span></label>
+    <input type="range" id="opacity-slider" name="opacity" min="0" max="100" value="100" hx-post="/update-plot"
+      hx-trigger="input changed delay:50ms" hx-target="#plot-container" hx-indicator=".htmx-indicator">
+  </div>
+
+  <div class="plot-container" id="plot-container" hx-get="/plot" hx-trigger="load">
+    <div class="htmx-indicator">Loading plot...</div>
+  </div>
+
+  <script>
+    // Update the opacity value display
+    document.getElementById('opacity-slider').addEventListener('input', function () {
+      document.getElementById('opacity-value').textContent = this.value + '%';
+    });
+  </script>
+</body>
+
+</html>
